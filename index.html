@@ -192,14 +192,9 @@
             color: var(--text-tertiary);
         }
 
-        .list-count {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-variant-numeric: tabular-nums;
-        }
-
         .list {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
 
@@ -541,8 +536,7 @@
 
         <main>
             <div class="list-header">
-                <div class="list-title">Indexes</div>
-                <div class="list-count">2</div>
+                <div class="list-title">Pages</div>
             </div>
 
             <div class="list">
@@ -560,6 +554,7 @@
                             </div>
                             <div class="card-desc">Interactive visualization of frequency-weighted connectivity across Europe</div>
                         </div>
+                    </div>
                     <div class="card-arrow">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 18l6-6-6-6"/>
@@ -579,6 +574,28 @@
                                 Business Class Honeymoon: Qatar vs. Singapore
                             </div>
                             <div class="card-desc">Qsuites vs. Singapore cabins compared on product, service, and routes</div>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="/cards/points" class="card">
+                    <div class="card-left">
+                        <div class="icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="2" y1="10" x2="22" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">
+                                Credit Card Points Transfer Flow
+                            </div>
+                            <div class="card-desc">Interactive mapping of credit card points transfer partners</div>
                         </div>
                     </div>
                     <div class="card-arrow">
@@ -626,7 +643,6 @@
             });
         })();
     </script>
-<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
 <script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
 </body>
 </html>
