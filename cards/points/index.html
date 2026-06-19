@@ -1561,6 +1561,15 @@
           </div>
 
           <div
+            id="alliance-partners"
+            class="mt-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hidden"
+          >
+            <h4 class="text-[13px] font-semibold text-slate-900 dark:text-white mb-2">Book via Alliance Partners</h4>
+            <p class="text-[12px] text-slate-600 dark:text-slate-400 mb-4">These airlines are in the same alliance (<span id="alliance-name" class="font-medium text-slate-700 dark:text-slate-300"></span>) and might be able to book flights on this airline.</p>
+            <div id="alliance-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+          </div>
+
+          <div
             class="mt-8 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
           >
             <h4
@@ -1607,6 +1616,7 @@
           id: "aer-lingus",
           name: "Aer Lingus AerClub",
           initials: "EI",
+          alliance: "Independent",
           chase: {
             available: true,
             ratio: "1:1",
@@ -1632,6 +1642,7 @@
           id: "aeromexico",
           name: "Aeromexico Rewards",
           initials: "AM",
+          alliance: "SkyTeam",
           chase: { available: false },
           citi: {
             available: true,
@@ -1659,6 +1670,7 @@
           id: "air-canada",
           name: "Air Canada Aeroplan",
           initials: "AC",
+          alliance: "Star Alliance",
           chase: {
             available: true,
             ratio: "1:1",
@@ -1691,6 +1703,7 @@
           id: "flying-blue",
           name: "Air France-KLM Flying Blue",
           initials: "AF",
+          alliance: "SkyTeam",
           chase: {
             available: true,
             ratio: "1:1",
@@ -1727,6 +1740,7 @@
           id: "alaska",
           name: "Alaska Airlines Mileage Plan",
           initials: "AS",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: { available: false },
           capone: { available: false },
@@ -1743,6 +1757,7 @@
           id: "american",
           name: "American Airlines AAdvantage",
           initials: "AA",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: {
             available: true,
@@ -1759,6 +1774,7 @@
           id: "ana",
           name: "ANA Mileage Club",
           initials: "NH",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: { available: false },
           capone: { available: false },
@@ -1775,6 +1791,7 @@
           id: "avianca",
           name: "Avianca LifeMiles",
           initials: "AV",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: {
             available: true,
@@ -1806,6 +1823,7 @@
           id: "british-airways",
           name: "British Airways Club",
           initials: "BA",
+          alliance: "Oneworld",
           chase: {
             available: true,
             ratio: "1:1",
@@ -1838,6 +1856,7 @@
           id: "cathay",
           name: "Cathay Pacific Asia Miles",
           initials: "CX",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: {
             available: true,
@@ -1869,6 +1888,7 @@
           id: "delta",
           name: "Delta SkyMiles",
           initials: "DL",
+          alliance: "SkyTeam",
           chase: { available: false },
           citi: { available: false },
           capone: { available: false },
@@ -1885,6 +1905,7 @@
           id: "emirates",
           name: "Emirates Skywards",
           initials: "EK",
+          alliance: "Independent",
           chase: { available: false },
           citi: {
             available: true,
@@ -1917,6 +1938,7 @@
           id: "etihad",
           name: "Etihad Guest",
           initials: "EY",
+          alliance: "Independent",
           chase: { available: false },
           citi: {
             available: true,
@@ -1947,6 +1969,7 @@
           id: "eva",
           name: "EVA Air Infinity MileageLands",
           initials: "BR",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: {
             available: true,
@@ -1968,6 +1991,7 @@
           id: "finnair",
           name: "Finnair Plus",
           initials: "AY",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: { available: false },
           capone: {
@@ -1983,6 +2007,7 @@
           id: "iberia",
           name: "Iberia Plus",
           initials: "IB",
+          alliance: "Oneworld",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2009,6 +2034,7 @@
           id: "japan-airlines",
           name: "Japan Airlines Mileage Bank",
           initials: "JL",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: { available: false },
           capone: {
@@ -2030,6 +2056,7 @@
           id: "jetblue",
           name: "JetBlue TrueBlue",
           initials: "B6",
+          alliance: "Independent",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2062,6 +2089,7 @@
           id: "qantas",
           name: "Qantas Frequent Flyer",
           initials: "QF",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: {
             available: true,
@@ -2087,6 +2115,7 @@
           id: "qatar",
           name: "Qatar Airways Privilege Club",
           initials: "QR",
+          alliance: "Oneworld",
           chase: { available: false },
           citi: {
             available: true,
@@ -2118,6 +2147,7 @@
           id: "singapore",
           name: "Singapore Airlines KrisFlyer",
           initials: "SQ",
+          alliance: "Star Alliance",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2150,6 +2180,7 @@
           id: "southwest",
           name: "Southwest Rapid Rewards",
           initials: "WN",
+          alliance: "Independent",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2171,6 +2202,7 @@
           id: "tap",
           name: "TAP Air Portugal Miles&Go",
           initials: "TP",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: { available: false },
           capone: {
@@ -2191,6 +2223,7 @@
           id: "thai",
           name: "Thai Royal Orchid Plus",
           initials: "TG",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: {
             available: true,
@@ -2206,6 +2239,7 @@
           id: "turkish",
           name: "Turkish Airlines Miles&Smiles",
           initials: "TK",
+          alliance: "Star Alliance",
           chase: { available: false },
           citi: {
             available: true,
@@ -2232,6 +2266,7 @@
           id: "united",
           name: "United MileagePlus",
           initials: "UA",
+          alliance: "Star Alliance",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2253,6 +2288,7 @@
           id: "virgin-atlantic",
           name: "Virgin Atlantic Flying Club",
           initials: "VS",
+          alliance: "SkyTeam",
           chase: {
             available: true,
             ratio: "1:1",
@@ -2283,6 +2319,7 @@
           id: "virgin-red",
           name: "Virgin Red",
           initials: "VR",
+          alliance: "SkyTeam",
           chase: { available: false },
           citi: {
             available: true,
@@ -2334,6 +2371,9 @@
       const amexContent = document.getElementById("amex-content");
       const amexSource = document.getElementById("amex-source");
       const recommendation = document.getElementById("recommendation");
+      const alliancePartnersSection = document.getElementById("alliance-partners");
+      const allianceNameSpan = document.getElementById("alliance-name");
+      const allianceList = document.getElementById("alliance-list");
       const recProgram = document.getElementById("rec-program");
       const recReason = document.getElementById("rec-reason");
       const chaseSource = document.getElementById("chase-source");
@@ -2363,6 +2403,7 @@
                         <div class="flex-1 min-w-0">
                             <div class="font-medium text-slate-900 dark:text-slate-100 leading-tight truncate pr-2">${a.name}</div>
                             <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                ${a.alliance && a.alliance !== 'Independent' ? `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">${a.alliance}</span>` : ""}
                                 ${a.chase.available ? `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-sky-50 dark:bg-sky-900/40 text-[#117ACA] dark:text-sky-300 border border-sky-200 dark:border-sky-800">Chase</span>` : ""}
                                 ${a.citi.available ? `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-cyan-50 dark:bg-cyan-900/40 text-[#056DAE] dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800">Citi</span>` : ""}
                                 ${a.capone.available ? `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-red-50 dark:bg-red-900/40 text-[#D03027] dark:text-red-300 border border-red-200 dark:border-red-800">Cap One</span>` : ""}
@@ -2520,6 +2561,34 @@
               "ring-[#D03027]",
               "ring-offset-2",
             );
+        }
+
+        if (airline.alliance && airline.alliance !== 'Independent') {
+          const partners = airlinesData.filter(a => a.alliance === airline.alliance && a.id !== airline.id);
+          if (partners.length > 0) {
+            allianceNameSpan.textContent = airline.alliance;
+            allianceList.innerHTML = partners.map(p => `
+              <button data-id="${p.id}" onclick="event.stopPropagation(); openDrawer('${p.id}')" class="flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors text-left w-full group">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0 group-hover:bg-slate-200 dark:group-hover:bg-slate-600 transition-colors">${p.initials}</div>
+                  <span class="text-[13px] font-medium text-slate-700 dark:text-slate-200 truncate">${p.name}</span>
+                  <span class="hidden sm:inline-block ml-1.5 px-1.5 py-0.5 text-[9px] font-semibold rounded bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">${p.alliance}</span>
+                </div>
+                <div class="flex gap-1 shrink-0 ml-2">
+                  ${p.chase.available ? `<div class="w-2.5 h-2.5 rounded-full bg-[#117ACA]" title="Chase"></div>` : ''}
+                  ${p.citi.available ? `<div class="w-2.5 h-2.5 rounded-full bg-[#056DAE]" title="Citi"></div>` : ''}
+                  ${p.capone.available ? `<div class="w-2.5 h-2.5 rounded-full bg-[#D03027]" title="Capital One"></div>` : ''}
+                  ${p.bilt.available ? `<div class="w-2.5 h-2.5 rounded-full bg-[#2d3748]" title="Bilt"></div>` : ''}
+                  ${p.amex.available ? `<div class="w-2.5 h-2.5 rounded-full bg-[#006fcf]" title="Amex"></div>` : ''}
+                </div>
+              </button>
+            `).join('');
+            alliancePartnersSection.classList.remove('hidden');
+          } else {
+            alliancePartnersSection.classList.add('hidden');
+          }
+        } else {
+          alliancePartnersSection.classList.add('hidden');
         }
 
         drawer.classList.remove("pointer-events-none");
