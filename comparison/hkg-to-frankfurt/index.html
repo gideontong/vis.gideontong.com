@@ -205,7 +205,7 @@
         overflow: hidden;
         border: 1px solid var(--border);
         box-shadow: var(--shadow-sm);
-        margin-bottom: 40px;
+        margin-bottom: 0;
         animation: fadeIn 0.6s ease-out 0.1s both;
         background: var(--bg-elev);
       }
@@ -482,6 +482,37 @@
         margin: 24px 0 12px 0;
         color: var(--text);
       }
+      .search-container {
+        position: relative;
+        margin: 24px 0;
+        width: 100%;
+      }
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+        pointer-events: none;
+      }
+      .search-input {
+        width: 100%;
+        padding: 16px 16px 16px 48px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text);
+        font-size: 16px;
+        outline: none;
+        transition: all var(--transition);
+        box-sizing: border-box;
+      }
+      .search-input:focus {
+        border-color: var(--featured);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
     </style>
   </head>
   <body>
@@ -511,6 +542,14 @@
       </header>
 
       <div id="map" class="map-container"></div>
+
+      <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="airlineSearch" class="search-input" placeholder="Search airlines..." aria-label="Search airlines" />
+      </div>
 
       <h2 class="section-title">Nonstop Airlines</h2>
       <div class="list" id="nonstop-list">
@@ -807,12 +846,30 @@
 
       const nonstopContainer = document.getElementById('nonstop-list');
       const singlestopContainer = document.getElementById('singlestop-list');
+      const airlineSearch = document.getElementById('airlineSearch');
 
-      const nonstop = airlines.filter(a => a.type === 'nonstop');
-      const singlestop = airlines.filter(a => a.type === 'singlestop').sort((a, b) => a.name.localeCompare(b.name));
+      function renderAirlines(filterText = '') {
+        const lowerFilter = filterText.toLowerCase();
+        const filteredAirlines = airlines.filter(a => a.name.toLowerCase().includes(lowerFilter));
+        
+        const nonstop = filteredAirlines.filter(a => a.type === 'nonstop');
+        const singlestop = filteredAirlines.filter(a => a.type === 'singlestop').sort((a, b) => a.name.localeCompare(b.name));
 
-      nonstopContainer.innerHTML = nonstop.map(createCard).join('');
-      singlestopContainer.innerHTML = singlestop.map(createCard).join('');
+        nonstopContainer.innerHTML = nonstop.length > 0 
+          ? nonstop.map(createCard).join('')
+          : '<div style="color: var(--text-secondary); padding: 16px;">No nonstop airlines match your search.</div>';
+          
+        singlestopContainer.innerHTML = singlestop.length > 0
+          ? singlestop.map(createCard).join('')
+          : '<div style="color: var(--text-secondary); padding: 16px;">No single stop airlines match your search.</div>';
+      }
+
+      airlineSearch.addEventListener('input', (e) => {
+        renderAirlines(e.target.value);
+      });
+
+      // Initial render
+      renderAirlines();
 
       // Modal Logic
       const modal = document.getElementById('airline-modal');
