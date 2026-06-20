@@ -1,0 +1,2779 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Los Angeles to Hong Kong in Business Class</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+      :root {
+        --bg: #fcfcfd;
+        --bg-elev: #ffffff;
+        --text: #09090b;
+        --text-secondary: #71717a;
+        --text-tertiary: #a1a1aa;
+        --border: #e4e4e7;
+        --border-hover: #d4d4d8;
+        --accent: #18181b;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
+        --featured: #2563eb;
+        --featured-bg: #eff6ff;
+        --featured-border: rgba(37, 99, 235, 0.2);
+        --radius: 16px;
+        --transition: 200ms cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      [data-theme="dark"] {
+        --bg: #09090b;
+        --bg-elev: #121215;
+        --text: #fafafa;
+        --text-secondary: #a1a1aa;
+        --text-tertiary: #71717a;
+        --border: #232326;
+        --border-hover: #2e2e32;
+        --accent: #fafafa;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+        --featured: #60a5fa;
+        --featured-bg: rgba(37, 99, 235, 0.12);
+        --featured-border: rgba(96, 165, 250, 0.25);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #09090b;
+          --bg-elev: #121215;
+          --text: #fafafa;
+          --text-secondary: #a1a1aa;
+          --text-tertiary: #71717a;
+          --border: #232326;
+          --border-hover: #2e2e32;
+          --accent: #fafafa;
+          --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+          --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+          --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+          --featured: #60a5fa;
+          --featured-bg: rgba(37, 99, 235, 0.12);
+          --featured-border: rgba(96, 165, 250, 0.25);
+        }
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.5;
+        transition: background-color var(--transition), color var(--transition);
+        position: relative;
+      }
+
+      .bg-gradient {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(800px circle at 50% -10%, rgba(37, 99, 235, 0.08), transparent 50%),
+                    radial-gradient(600px circle at 85% 5%, rgba(124, 58, 237, 0.06), transparent 50%);
+        pointer-events: none;
+      }
+
+      [data-theme="dark"] .bg-gradient {
+        opacity: 0.7;
+        background: radial-gradient(800px circle at 50% -10%, rgba(37, 99, 235, 0.12), transparent 50%),
+                    radial-gradient(600px circle at 85% 5%, rgba(124, 58, 237, 0.08), transparent 50%);
+      }
+
+      .wrap {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 48px 24px 24px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 40px;
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      .header-content h1 {
+        font-size: clamp(28px, 5vw, 40px);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      .header-content p {
+        color: var(--text-secondary);
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .nav-btn:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .theme-toggle {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text-secondary);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+      }
+
+      .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.4s ease;
+      }
+
+      .theme-toggle:hover svg {
+        transform: rotate(15deg);
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .map-container {
+        width: 100%;
+        height: 400px;
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 0;
+        animation: fadeIn 0.6s ease-out 0.1s both;
+        background: var(--bg-elev);
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--text);
+        animation: fadeIn 0.6s ease-out 0.2s both;
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 40px;
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px 22px;
+        background: var(--bg-elev);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        text-decoration: none;
+        color: inherit;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+        animation: fadeUp 0.5s ease-out both;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .card-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        min-width: 0;
+        flex: 1;
+      }
+
+      .icon-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        color: var(--text-secondary);
+      }
+
+      .card-content {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .card-details {
+        font-size: 14px;
+        color: var(--text-secondary);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+      }
+
+      .card-details div strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .badge {
+        display: inline-flex;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 500;
+        background: var(--featured-bg);
+        color: var(--featured);
+        border: 1px solid var(--featured-border);
+        border-radius: 999px;
+      }
+
+      .badge-no {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+      }
+
+      .badge-alliance {
+        background: var(--bg-elev);
+        color: var(--text);
+        border: 1px solid var(--border-hover);
+      }
+      
+      .badge-avios {
+        background: rgba(124, 58, 237, 0.1);
+        color: #7c3aed;
+        border: 1px solid rgba(124, 58, 237, 0.2);
+      }
+      
+      .badge-partner {
+        background: rgba(14, 165, 233, 0.1);
+        color: #0ea5e9;
+        border: 1px solid rgba(14, 165, 233, 0.2);
+        font-size: 10px;
+        padding: 1px 6px;
+      }
+      
+      .partner-badges {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+
+      .card-arrow {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        color: var(--text-tertiary);
+        transition: all var(--transition);
+      }
+
+      .card:hover .card-arrow {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .card:hover .card-arrow svg {
+        transform: translateX(2px) scale(1.1);
+      }
+
+      .flight-path {
+        cursor: pointer;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 600px) {
+        .wrap { padding: 32px 16px 16px; }
+        .card-details { grid-template-columns: 1fr; }
+        .card-arrow { display: none; }
+      }
+
+      .modal {
+        margin: auto;
+        padding: 0;
+        border: none;
+        border-radius: var(--radius);
+        background: var(--bg-elev);
+        color: var(--text);
+        box-shadow: var(--shadow-lg);
+        width: 90%;
+        max-width: 600px;
+        overflow: hidden;
+      }
+      .modal::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        animation: fadeIn 0.3s ease-out;
+      }
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+        max-height: 85vh;
+      }
+      .modal-header {
+        padding: 24px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .modal-close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        background: none;
+        border: none;
+        outline: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 8px;
+        transition: all var(--transition);
+        z-index: 10;
+      }
+      .modal-close:hover {
+        background: var(--border);
+        color: var(--text);
+      }
+      .modal-close svg { width: 20px; height: 20px; }
+      .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .modal-footer {
+        padding: 24px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: center;
+        background: var(--bg-elev);
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--featured);
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all var(--transition);
+        cursor: pointer;
+        width: 100%;
+        font-size: 15px;
+      }
+      .btn-primary:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      }
+      .booking-option {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        background: var(--bg);
+      }
+      .booking-option:last-child { margin-bottom: 0; }
+      .booking-option-title {
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .section-subtitle {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 24px 0 12px 0;
+        color: var(--text);
+      }
+      .search-container {
+        position: relative;
+        margin: 24px 0;
+        width: 100%;
+      }
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+        pointer-events: none;
+      }
+      .search-input {
+        width: 100%;
+        padding: 16px 16px 16px 48px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text);
+        font-size: 16px;
+        outline: none;
+        transition: all var(--transition);
+        box-sizing: border-box;
+      }
+      .search-input:focus {
+        border-color: var(--featured);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+    </style>
+    <link rel="icon" type="image/png" href="/media/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/media/favicon.svg" />
+    <link rel="shortcut icon" href="/media/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Travel" />
+    <link rel="manifest" href="/media/site.webmanifest" />
+  </head>
+  <body>
+    <div class="bg-gradient"></div>
+    <div class="wrap">
+      <div class="top-bar">
+        <a href="/" class="nav-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Return to Main
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+        </button>
+      </div>
+
+      <header>
+        <div class="header-content">
+          <h1>Los Angeles to Hong Kong in Business Class</h1>
+          <p>Our business class flight options on our way to Hong Kong.</p>
+        </div>
+      </header>
+
+      <div id="map" class="map-container"></div>
+
+      <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="airlineSearch" class="search-input" placeholder="Search airlines..." aria-label="Search airlines" />
+      </div>
+
+      <h2 class="section-title">Nonstop Airlines</h2>
+      <div class="list" id="nonstop-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <h2 class="section-title">Single Stop Airlines</h2>
+      <div class="list" id="singlestop-list">
+        <!-- Rendered by JS -->
+      </div>
+      
+      <dialog id="airline-modal" class="modal">
+        <div class="modal-content">
+          <button class="modal-close" onclick="closeModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+          <div class="modal-header" id="modal-header"></div>
+          <div class="modal-body" id="modal-body"></div>
+          <div class="modal-footer" id="modal-footer"></div>
+        </div>
+      </dialog>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script>
+      // Theme toggling
+      const themeToggle = document.getElementById('themeToggle');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      const sunIcon = `<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+      const moonIcon = `<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+      let currentTheme = localStorage.getItem('theme');
+      if (!currentTheme) {
+        currentTheme = prefersDark.matches ? 'dark' : 'light';
+      }
+
+      function getTileUrl(theme) {
+        return theme === 'dark' 
+          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      }
+
+      let tileLayer;
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        themeToggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+        themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+        if (tileLayer) {
+          tileLayer.setUrl(getTileUrl(theme));
+        }
+      }
+
+      setTheme(currentTheme);
+
+      themeToggle.addEventListener('click', () => {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        setTheme(currentTheme);
+      });
+
+      // Data
+      const airlines = [
+  {
+    "name": "Cathay Pacific",
+    "type": "nonstop",
+    "route": "LAX - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER (Aria Suite)",
+    "product": "Aria Suite / Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "cathaypacific.com",
+    "alliance": "Oneworld",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Citi",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Qatar Airways (Privilege Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Delta",
+    "type": "nonstop",
+    "route": "LAX - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Delta One Suites",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "delta.com",
+    "alliance": "SkyTeam",
+    "partners": [
+      "Amex"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Delta Air Lines (SkyMiles)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      },
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "United Airlines",
+    "type": "nonstop",
+    "route": "LAX - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "787-9",
+    "product": "Polaris",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "united.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Bilt",
+      "Chase"
+    ],
+    "bookingOptions": [
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      },
+      {
+        "name": "Singapore Airlines (KrisFlyer)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Capital One",
+          "Chase",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Air Canada",
+    "type": "singlestop",
+    "route": "LAX - YVR - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / 787-9",
+    "product": "Signature Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        49.1967,
+        -123.1815
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "aircanada.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Chase",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Air China",
+    "type": "singlestop",
+    "route": "LAX - PEK - HKG",
+    "config": "1-2-1 / 2-2-2",
+    "bestAircraft": "A350-900 / 777-300ER",
+    "product": "Capital Pavilion",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        40.0799,
+        116.6031
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "airchina.com",
+    "alliance": "Star Alliance",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Air France",
+    "type": "singlestop",
+    "route": "LAX - CDG - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / A350-900",
+    "product": "Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        49.0097,
+        2.5479
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "airfrance.com",
+    "alliance": "SkyTeam",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Chase",
+      "Citi",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Delta Air Lines (SkyMiles)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Air New Zealand",
+    "type": "singlestop",
+    "route": "LAX - AKL - HKG",
+    "config": "1-2-1 / 1-1-1",
+    "bestAircraft": "777-300ER",
+    "product": "Business Premier",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        -37.0082,
+        174.7915
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "airnewzealand.com",
+    "alliance": "Star Alliance",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Air Premia",
+    "type": "singlestop",
+    "route": "LAX - ICN - HKG",
+    "config": "2-3-2",
+    "bestAircraft": "787-9",
+    "product": "Premium 42 (Premium Economy)",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        37.4602,
+        126.4407
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "airpremia.com",
+    "alliance": "Independent",
+    "partners": [],
+    "bookingOptions": []
+  },
+  {
+    "name": "All Nippon Airways",
+    "type": "singlestop",
+    "route": "LAX - HND - HKG & LAX - NRT - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER (The Room)",
+    "product": "The Room / Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        35.5494,
+        139.7798
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "ana.co.jp",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Amex"
+    ],
+    "bookingOptions": [
+      {
+        "name": "ANA Mileage Club",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Asiana Airlines",
+    "type": "singlestop",
+    "route": "LAX - ICN - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Business Smartium",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        37.4602,
+        126.4407
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "flyasiana.com",
+    "alliance": "Star Alliance",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "British Airways",
+    "type": "singlestop",
+    "route": "LAX - LHR - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / A350-1000",
+    "product": "Club Suite",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        51.47,
+        -0.4543
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "britishairways.com",
+    "alliance": "Oneworld",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Chase"
+    ],
+    "bookingOptions": [
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Qatar Airways (Privilege Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "China Airlines",
+    "type": "singlestop",
+    "route": "LAX - TPE - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / A350-900",
+    "product": "Premium Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        25.0797,
+        121.2342
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "china-airlines.com",
+    "alliance": "SkyTeam",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Delta Air Lines (SkyMiles)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "China Eastern Airlines",
+    "type": "singlestop",
+    "route": "LAX - PVG - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / A350-900",
+    "product": "Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        31.1443,
+        121.8083
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "ceair.com",
+    "alliance": "SkyTeam",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "China Southern Airlines",
+    "type": "singlestop",
+    "route": "LAX - CAN - HKG & LAX - WUH - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900 / 787-9",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        23.3959,
+        113.298
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "csair.com",
+    "alliance": "Independent",
+    "partners": [],
+    "bookingOptions": []
+  },
+  {
+    "name": "Emirates",
+    "type": "singlestop",
+    "route": "LAX - DXB - HKG",
+    "config": "1-2-1 / 2-3-2",
+    "bestAircraft": "A380",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        25.2532,
+        55.3657
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "emirates.com",
+    "alliance": "Independent",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Chase",
+      "Citi"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Emirates (Skywards)",
+        "alliance": "Independent",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "EVA Air",
+    "type": "singlestop",
+    "route": "LAX - TPE - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER",
+    "product": "Royal Laurel Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        25.0797,
+        121.2342
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "evaair.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Capital One",
+      "Citi"
+    ],
+    "bookingOptions": [
+      {
+        "name": "EVA Air (Infinity MileageLands)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Capital One",
+          "Citi"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fiji Airways",
+    "type": "singlestop",
+    "route": "LAX - NAN - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        -17.7554,
+        177.4432
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "fijiairways.com",
+    "alliance": "Oneworld Connect",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Alaska Airlines (Mileage Plan)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Bilt"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Finnair",
+    "type": "singlestop",
+    "route": "LAX - HEL - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "AirLounge",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        60.3172,
+        24.9633
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "finnair.com",
+    "alliance": "Oneworld",
+    "partners": [
+      "Capital One",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Finnair (Plus)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Capital One",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Japan Airlines",
+    "type": "singlestop",
+    "route": "LAX - HND - HKG & LAX - NRT - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-1000",
+    "product": "JAL Suite / Sky Suite",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        35.5494,
+        139.7798
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "jal.co.jp",
+    "alliance": "Oneworld",
+    "partners": [
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Japan Airlines (Mileage Bank)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Alaska Airlines (Mileage Plan)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Bilt"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "KLM Royal Dutch Airlines",
+    "type": "singlestop",
+    "route": "LAX - AMS - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "787-10",
+    "product": "World Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        52.3081,
+        4.7642
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "klm.com",
+    "alliance": "SkyTeam",
+    "partners": [
+      "Amex",
+      "Bilt",
+      "Capital One",
+      "Chase",
+      "Citi",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Delta Air Lines (SkyMiles)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Korean Air",
+    "type": "singlestop",
+    "route": "LAX - ICN - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "747-8 / 787-10",
+    "product": "Prestige Suites",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        37.4602,
+        126.4407
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "koreanair.com",
+    "alliance": "SkyTeam",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Delta Air Lines (SkyMiles)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex"
+        ]
+      },
+      {
+        "name": "Virgin Atlantic (Flying Club)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Lufthansa",
+    "type": "singlestop",
+    "route": "LAX - FRA - HKG & LAX - MUC - HKG",
+    "config": "1-2-1 / 1-1-1",
+    "bestAircraft": "A350-900 (Allegris)",
+    "product": "Allegris",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        50.0379,
+        8.5622
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "lufthansa.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Bilt",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Lufthansa (Miles & More)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Philippine Airlines",
+    "type": "singlestop",
+    "route": "LAX - MNL - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "777-300ER / A350-900",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        14.5086,
+        121.0194
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "philippineairlines.com",
+    "alliance": "Independent",
+    "partners": [],
+    "bookingOptions": []
+  },
+  {
+    "name": "Qantas",
+    "type": "singlestop",
+    "route": "LAX - BNE - HKG, LAX - MEL - HKG, LAX - SYD - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A380 / 787-9",
+    "product": "Business Suite",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        -33.9461,
+        151.1772
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "qantas.com",
+    "alliance": "Oneworld",
+    "partners": [
+      "Amex",
+      "Capital One",
+      "Citi"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Qantas (Frequent Flyer)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Capital One",
+          "Citi"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Qatar Airways",
+    "type": "singlestop",
+    "route": "LAX - DOH - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-1000",
+    "product": "Qsuite",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        25.2731,
+        51.608
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "qatarairways.com",
+    "alliance": "Oneworld",
+    "partners": [
+      "Amex",
+      "Citi",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Qatar Airways (Privilege Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "British Airways (Executive Club)",
+        "alliance": "Oneworld",
+        "avios": true,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Cathay Pacific (Asia Miles)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Sichuan Airlines",
+    "type": "singlestop",
+    "route": "LAX - TFU - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        30.3197,
+        104.4405
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "sichuanair.com",
+    "alliance": "Independent",
+    "partners": [],
+    "bookingOptions": []
+  },
+  {
+    "name": "Singapore Airlines",
+    "type": "singlestop",
+    "route": "LAX - SIN - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        1.3644,
+        103.9915
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "singaporeair.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Amex",
+      "Capital One",
+      "Chase",
+      "Citi"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Singapore Airlines (KrisFlyer)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Capital One",
+          "Chase",
+          "Citi"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Starlux Airlines",
+    "type": "singlestop",
+    "route": "LAX - TPE - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "A350-900",
+    "product": "Business Class",
+    "doors": true,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        25.0797,
+        121.2342
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "starlux-airlines.com",
+    "alliance": "Independent",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Alaska Airlines (Mileage Plan)",
+        "alliance": "Oneworld",
+        "avios": false,
+        "partners": [
+          "Bilt"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Swiss International Air Lines",
+    "type": "singlestop",
+    "route": "LAX - ZRH - HKG",
+    "config": "1-2-1 / 2-2-1",
+    "bestAircraft": "777-300ER",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        47.4582,
+        8.5555
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "swiss.com",
+    "alliance": "Star Alliance",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Turkish Airlines",
+    "type": "singlestop",
+    "route": "LAX - IST - HKG",
+    "config": "1-2-1 / 2-3-2",
+    "bestAircraft": "787-9 / A350-900",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        41.2753,
+        28.7519
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "turkishairlines.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Bilt",
+      "Capital One",
+      "Citi",
+      "Rove Miles"
+    ],
+    "bookingOptions": [
+      {
+        "name": "Turkish Airlines (Miles&Smiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Capital One",
+          "Citi",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "United Airlines",
+    "type": "singlestop",
+    "route": "LAX - SFO - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "787-9 / 777-300ER",
+    "product": "Polaris",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        37.6213,
+        -122.379
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "united.com",
+    "alliance": "Star Alliance",
+    "partners": [
+      "Bilt",
+      "Chase"
+    ],
+    "bookingOptions": [
+      {
+        "name": "United Airlines (MileagePlus)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Bilt",
+          "Chase"
+        ]
+      },
+      {
+        "name": "Air Canada (Aeroplan)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Rove Miles"
+        ]
+      },
+      {
+        "name": "Avianca (LifeMiles)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Citi"
+        ]
+      },
+      {
+        "name": "Singapore Airlines (KrisFlyer)",
+        "alliance": "Star Alliance",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Capital One",
+          "Chase",
+          "Citi"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XiamenAir",
+    "type": "singlestop",
+    "route": "LAX - XMN - HKG",
+    "config": "1-2-1",
+    "bestAircraft": "787-9",
+    "product": "Business Class",
+    "doors": false,
+    "path": [
+      [
+        33.9416,
+        -118.4085
+      ],
+      [
+        24.544,
+        118.1277
+      ],
+      [
+        22.308,
+        113.9185
+      ]
+    ],
+    "domain": "xiamenair.com",
+    "alliance": "SkyTeam",
+    "partners": [],
+    "bookingOptions": [
+      {
+        "name": "Air France/KLM (Flying Blue)",
+        "alliance": "SkyTeam",
+        "avios": false,
+        "partners": [
+          "Amex",
+          "Bilt",
+          "Capital One",
+          "Chase",
+          "Citi",
+          "Rove Miles"
+        ]
+      }
+    ]
+  }
+];
+
+      // Map Init
+      const map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false
+      }).setView([40, -170], 2);
+
+      tileLayer = L.tileLayer(getTileUrl(currentTheme), {
+        maxZoom: 19
+      }).addTo(map);
+
+      // Draw routes
+      const drawnPaths = new Map();
+      
+      airlines.forEach(a => {
+        // Simple string key for paths
+        const key = a.path.map(p => p.join(',')).join('|');
+        if (!drawnPaths.has(key)) {
+          drawnPaths.set(key, { path: a.path, airlines: [] });
+        }
+        drawnPaths.get(key).airlines.push(a.name);
+      });
+
+      drawnPaths.forEach(data => {
+        const latlngs = [];
+        let currentLng = data.path[0][1];
+        for (let i = 0; i < data.path.length - 1; i++) {
+          const startPt = turf.point([data.path[i][1], data.path[i][0]]);
+          const endPt = turf.point([data.path[i+1][1], data.path[i+1][0]]);
+          const greatCircle = turf.greatCircle(startPt, endPt);
+          
+          let segmentLatlngs = [];
+          
+          const processCoords = (coordsArray) => {
+            coordsArray.forEach(coord => {
+              let lng = coord[0];
+              while (lng - currentLng > 180) lng -= 360;
+              while (currentLng - lng > 180) lng += 360;
+              currentLng = lng;
+              segmentLatlngs.push([coord[1], lng]);
+            });
+          };
+
+          if (greatCircle.geometry.type === 'MultiLineString') {
+            greatCircle.geometry.coordinates.forEach(line => {
+              processCoords(line);
+            });
+          } else {
+            processCoords(greatCircle.geometry.coordinates);
+          }
+          
+          if (i > 0) segmentLatlngs.shift();
+          latlngs.push(...segmentLatlngs);
+        }
+
+        const polyline = L.polyline(latlngs, {
+          color: 'var(--featured)',
+          weight: 2,
+          opacity: 0.6,
+          className: 'flight-path'
+        }).addTo(map);
+        
+        polyline.bindTooltip(data.airlines.join(', '), {
+          sticky: true,
+          className: 'route-tooltip'
+        });
+
+        // Hover effects
+        polyline.on('mouseover', function(e) {
+          this.setStyle({ weight: 4, opacity: 1 });
+        });
+        polyline.on('mouseout', function(e) {
+          this.setStyle({ weight: 2, opacity: 0.6 });
+        });
+
+        // Click effect to scroll to card
+        polyline.on('click', function(e) {
+          const airlineId = 'card-' + data.airlines[0].toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          const element = document.getElementById(airlineId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.style.transition = 'box-shadow 0.3s ease';
+            element.style.boxShadow = '0 0 0 2px var(--featured), var(--shadow-lg)';
+            setTimeout(() => {
+              element.style.boxShadow = '';
+            }, 2000);
+          }
+        });
+      });
+
+      // Render Cards
+      function createCard(a) {
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(a.name + ' business class')}`;
+        const badgeClass = a.doors ? 'badge' : 'badge badge-no';
+        const doorText = a.doors ? 'Privacy Doors' : 'No Doors';
+        
+        const logoImg = a.domain 
+          ? `<img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${a.domain}&size=128" alt="${a.name} logo" style="width: 24px; height: 24px; border-radius: 4px;" />` 
+          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>`;
+          
+        const allianceBadge = `<span class="badge badge-alliance">${a.alliance}</span>`;
+        const aviosBadge = a.avios ? `<span class="badge badge-avios">Avios</span>` : '';
+        const partnersBadges = a.partners && a.partners.length > 0 
+          ? `<div class="partner-badges">${a.partners.map(p => `<span class="badge badge-partner">${p}</span>`).join('')}</div>`
+          : '';
+
+        const id = 'card-' + a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        // Instead of target="_blank" href="...", we now trigger the modal and pass the index
+        const index = airlines.indexOf(a);
+
+        return `
+          <div id="${id}" class="card" onclick="openModal(${index})" style="cursor: pointer;">
+            <div class="card-left">
+              <div class="icon-wrap">
+                ${logoImg}
+              </div>
+              <div class="card-content">
+                <div class="card-title">
+                  ${a.name}
+                  ${allianceBadge}
+                  ${aviosBadge}
+                  <span class="${badgeClass}">${doorText}</span>
+                </div>
+                ${partnersBadges}
+                <div class="card-details">
+                  <div><strong>Route:</strong> ${a.route}</div>
+                  <div><strong>Config:</strong> ${a.config}</div>
+                  <div><strong>Best Aircraft:</strong> ${a.bestAircraft}</div>
+                  <div><strong>Product:</strong> ${a.product}</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+        `;
+      }
+
+      const nonstopContainer = document.getElementById('nonstop-list');
+      const singlestopContainer = document.getElementById('singlestop-list');
+      const airlineSearch = document.getElementById('airlineSearch');
+
+      function renderAirlines(filterText = '') {
+        const lowerFilter = filterText.toLowerCase();
+        const filteredAirlines = airlines.filter(a => a.name.toLowerCase().includes(lowerFilter));
+        
+        const nonstop = filteredAirlines.filter(a => a.type === 'nonstop');
+        const singlestop = filteredAirlines.filter(a => a.type === 'singlestop').sort((a, b) => a.name.localeCompare(b.name));
+
+        nonstopContainer.innerHTML = nonstop.length > 0 
+          ? nonstop.map(createCard).join('')
+          : '<div style="color: var(--text-secondary); padding: 16px;">No nonstop airlines match your search.</div>';
+          
+        singlestopContainer.innerHTML = singlestop.length > 0
+          ? singlestop.map(createCard).join('')
+          : '<div style="color: var(--text-secondary); padding: 16px;">No single stop airlines match your search.</div>';
+      }
+
+      airlineSearch.addEventListener('input', (e) => {
+        renderAirlines(e.target.value);
+      });
+
+      // Initial render
+      renderAirlines();
+
+      // Modal Logic
+      const modal = document.getElementById('airline-modal');
+      const modalHeader = document.getElementById('modal-header');
+      const modalBody = document.getElementById('modal-body');
+      const modalFooter = document.getElementById('modal-footer');
+
+      function openModal(index) {
+        const a = airlines[index];
+        const badgeClass = a.doors ? 'badge' : 'badge badge-no';
+        const doorText = a.doors ? 'Privacy Doors' : 'No Doors';
+        const logoImg = a.domain 
+          ? `<img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${a.domain}&size=128" alt="${a.name} logo" style="width: 32px; height: 32px; border-radius: 6px;" />` 
+          : '';
+
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(a.name + ' business class')}`;
+
+        modalHeader.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 16px;">
+            ${logoImg}
+            <div style="font-size: 20px; font-weight: 600;">${a.name}</div>
+          </div>
+        `;
+
+        let bookingHtml = '';
+        if (a.bookingOptions && a.bookingOptions.length > 0) {
+          bookingHtml = a.bookingOptions.map(opt => {
+            const allianceB = `<span class="badge badge-alliance">${opt.alliance}</span>`;
+            const aviosB = opt.avios ? `<span class="badge badge-avios">Avios</span>` : '';
+            const partnerB = opt.partners && opt.partners.length > 0 
+              ? `<div class="partner-badges" style="margin-top: 6px; margin-bottom: 0;">${opt.partners.map(p => `<span class="badge badge-partner">${p}</span>`).join('')}</div>`
+              : '';
+            return `
+              <div class="booking-option">
+                <div class="booking-option-title">${opt.name} ${allianceB} ${aviosB}</div>
+                ${partnerB}
+              </div>
+            `;
+          }).join('');
+        }
+
+        modalBody.innerHTML = `
+          <div class="card-details" style="margin-bottom: 24px;">
+            <div><strong>Route:</strong> ${a.route}</div>
+            <div><strong>Config:</strong> ${a.config}</div>
+            <div><strong>Best Aircraft:</strong> ${a.bestAircraft}</div>
+            <div><strong>Product:</strong> ${a.product}</div>
+            <div><strong>Privacy:</strong> <span class="${badgeClass}">${doorText}</span></div>
+          </div>
+          <div class="section-subtitle">Award Flight Booking Options</div>
+          ${bookingHtml || '<div>No direct booking options listed.</div>'}
+        `;
+
+        modalFooter.innerHTML = `
+          <a href="${url}" target="_blank" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+            </svg>
+            Search YouTube for Reviews
+          </a>
+        `;
+
+        modal.showModal();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.close();
+      }
+
+      modal.addEventListener('close', () => {
+        document.body.style.overflow = '';
+      });
+
+      modal.addEventListener('click', (e) => {
+        const dialogDimensions = modal.getBoundingClientRect()
+        if (
+          e.clientX < dialogDimensions.left ||
+          e.clientX > dialogDimensions.right ||
+          e.clientY < dialogDimensions.top ||
+          e.clientY > dialogDimensions.bottom
+        ) {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
