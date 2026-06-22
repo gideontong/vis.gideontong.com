@@ -1017,6 +1017,9 @@
         },
       ];
 
+      // Sort cards alphabetically by name
+      cards.sort((a, b) => a.name.localeCompare(b.name));
+
       const grid = document.getElementById("cardGrid");
       const searchInput = document.getElementById("searchInput");
       const toggleBtns = document.querySelectorAll(".toggle-btn");
