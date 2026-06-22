@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visa GigSky eSIM Offers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #fcfcfd;
+        --bg-elev: #ffffff;
+        --text: #09090b;
+        --text-secondary: #71717a;
+        --text-tertiary: #a1a1aa;
+        --border: #e4e4e7;
+        --border-hover: #d4d4d8;
+        --accent: #18181b;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
+        --featured: #2563eb;
+        --radius: 16px;
+        --transition: 200ms cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      [data-theme="dark"] {
+        --bg: #09090b;
+        --bg-elev: #121215;
+        --text: #fafafa;
+        --text-secondary: #a1a1aa;
+        --text-tertiary: #71717a;
+        --border: #232326;
+        --border-hover: #2e2e32;
+        --accent: #fafafa;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md:
+          0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+        --featured: #60a5fa;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.5;
+        transition:
+          background-color var(--transition),
+          color var(--transition);
+      }
+
+      .bg-gradient {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(
+            800px circle at 50% -10%,
+            rgba(37, 99, 235, 0.08),
+            transparent 50%
+          ),
+          radial-gradient(
+            600px circle at 85% 5%,
+            rgba(124, 58, 237, 0.06),
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+
+      [data-theme="dark"] .bg-gradient {
+        opacity: 0.7;
+        background:
+          radial-gradient(
+            800px circle at 50% -10%,
+            rgba(37, 99, 235, 0.12),
+            transparent 50%
+          ),
+          radial-gradient(
+            600px circle at 85% 5%,
+            rgba(124, 58, 237, 0.08),
+            transparent 50%
+          );
+      }
+
+      .wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 48px 24px 24px;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px 8px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+        font-size: 14px;
+        background: var(--bg-elev);
+        border: 1px solid var(--border);
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .nav-btn:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .theme-toggle {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text-secondary);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+      }
+
+      .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.4s ease;
+      }
+
+      .theme-toggle:hover svg {
+        transform: rotate(15deg);
+      }
+
+      header {
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: clamp(28px, 5vw, 40px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 16px;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      @media (min-width: 768px) {
+        .controls {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      .search-container {
+        position: relative;
+        flex: 1;
+        max-width: 500px;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+        pointer-events: none;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 14px 16px 14px 48px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text);
+        font-size: 15px;
+        outline: none;
+        transition: all var(--transition);
+      }
+
+      .search-input:focus {
+        border-color: var(--featured);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+
+      .toggle-group {
+        display: flex;
+        background: var(--border);
+        padding: 4px;
+        border-radius: 12px;
+        gap: 4px;
+      }
+
+      .toggle-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all var(--transition);
+        white-space: nowrap;
+      }
+
+      .toggle-btn.active {
+        background: var(--bg-elev);
+        color: var(--text);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 48px;
+      }
+
+      @media (min-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+        }
+      }
+
+      @media (min-width: 1400px) {
+        .grid {
+          grid-template-columns: repeat(6, 1fr);
+        }
+      }
+
+      .card {
+        background: var(--bg-elev);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--border-hover);
+      }
+
+      .card-img {
+        width: 100%;
+        aspect-ratio: 2.35 / 1.5;
+        background: linear-gradient(135deg, #e4e4e7, #d4d4d8);
+        position: relative;
+      }
+
+      [data-theme="dark"] .card-img {
+        background: linear-gradient(135deg, #232326, #2e2e32);
+      }
+
+      .card-body {
+        padding: 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+        line-height: 1.3;
+      }
+
+      .card-issuer {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .card-footer {
+        margin-top: auto;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        text-align: center;
+      }
+
+      .footer-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .footer-label {
+        font-size: 11px;
+        color: var(--text-tertiary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 2px;
+      }
+
+      .ineligible {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        text-align: center;
+        font-style: italic;
+        padding: 4px 0;
+      }
+
+      footer.page-footer {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-gradient"></div>
+    <div class="wrap">
+      <div class="top-bar">
+        <a href="/" class="nav-btn">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back to Main
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg
+            class="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <header>
+        <h1>Visa eSIM Offers</h1>
+        <p class="subtitle">
+          Find complimentary GigSky global data plans available on your Visa
+          card.
+        </p>
+      </header>
+
+      <div class="controls">
+        <div class="search-container">
+          <svg
+            class="search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search cards or banks..."
+          />
+        </div>
+        <div class="toggle-group" id="filterToggles">
+          <button class="toggle-btn active" data-filter="all">Show All</button>
+          <button class="toggle-btn" data-filter="1 GB">1 GB</button>
+          <button class="toggle-btn" data-filter="3 GB">3 GB</button>
+          <button class="toggle-btn" data-filter="5 GB">5 GB</button>
+        </div>
+      </div>
+
+      <div class="grid" id="cardGrid">
+        <!-- Rendered via JS -->
+      </div>
+
+      <footer class="page-footer">
+        eSIM data refreshed in 2026. Website managed by Gideon Tong.
+      </footer>
+    </div>
+
+    <script>
+      // Theme Logic
+      const toggle = document.getElementById("themeToggle");
+      const html = document.documentElement;
+      const sunIcon = `<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+      const moonIcon = `<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+      const getPreferred = () =>
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      const setTheme = (theme) => {
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        toggle.innerHTML = theme === "dark" ? sunIcon : moonIcon;
+      };
+
+      setTheme(localStorage.getItem("theme") || getPreferred());
+      toggle.addEventListener("click", () => {
+        setTheme(html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+      });
+
+      // Data
+      const cards = [
+        {
+          bank: "Chase Bank",
+          name: "Chase Sapphire Preferred® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Sapphire_Preferred.webp",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Sapphire Reserve® Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Sapphire_Reserve.webp",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Freedom Unlimited® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Freedom_Unlimited.webp",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Prime Visa",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Southwest Rapid Rewards® Priority Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "United℠ Explorer Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Marriott Bonvoy Boundless® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Marriott_Bonvoy_Boundless.webp",
+        },
+        {
+          bank: "Chase Bank",
+          name: "World of Hyatt Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "The Ritz-Carlton™ Credit Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Disney® Visa® Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Disney® Premier Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Disney® Inspire Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Marriott Bonvoy Bold® Credit Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Freedom Rise® Credit Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Marriott Bonvoy Bountiful™ Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "United Gateway℠ Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "United Quest℠ Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "United Club℠ Infinite Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Freedom Student Credit Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "British Airways Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Iberia Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Aer Lingus Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Southwest Rapid Rewards® Plus Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Southwest Rapid Rewards® Premier Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Ink Business Cash® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Ink Business Preferred® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Ink Business Unlimited® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Ink Business Premier® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Freedom® Credit Card (Original)",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Chase Bank",
+          name: "Chase Slate Edge℠ Credit Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Venture X Rewards Credit Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Venture_X.webp",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Venture Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One VentureOne Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Venture Business Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One VentureOne Business Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Venture X Business Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Spark Cash Plus Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Spark Cash Select Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "Capital One Quicksilver Cash Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Capital One",
+          name: "The Key Rewards Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Citi",
+          name: "Costco Anywhere Visa® Card by Citi",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Costco_Anywhere.webp",
+        },
+        {
+          bank: "Citi",
+          name: "Costco Anywhere Visa® Business Card by Citi",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Citi",
+          name: "My Best Buy® Visa® Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Citi",
+          name: "Citi® Dividend Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Active Cash® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+          img: "media/Wells_Fargo_Active_Cash.webp",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Autograph℠ Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Autograph Journey℠ Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Reflect® Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Premier Autograph Visa Infinite® Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Private Bank Visa Infinite® Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Wells Fargo",
+          name: "Wells Fargo Cash Wise Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Altitude Reserve Visa Infinite® Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Cash+® Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Smartly™ Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Altitude® Go Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Altitude® Connect Visa Signature® Card",
+          gb: "5 GB",
+          validity: "15 Days",
+          refresh: "Renewable every 15 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Shopper Cash Rewards® Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Triple Cash Rewards Visa® Business Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "U.S. Bank",
+          name: "U.S. Bank Shield™ Visa® Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Bank of America",
+          name: "Atmos™ Rewards Summit Visa Infinite® Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Atmos™ Rewards Ascent Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Bank of America® Customized Cash Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Bank of America® Unlimited Cash Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Bank of America® Travel Rewards Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Bank of America® Premium Rewards® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Bank of America® Premium Rewards® Elite Credit Card",
+          gb: "3 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "Royal ONE™ Visa Signature® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Bank of America",
+          name: "BankAmericard® Credit Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Barclays",
+          name: "Priceline VIP Rewards™ Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Barclays",
+          name: "Breeze Easy® Visa® Credit Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Barclays",
+          name: "Princess Cruises® Rewards Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Barclays",
+          name: "Holland America Line® Rewards Visa® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Barclays",
+          name: "Uber Visa Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+        {
+          bank: "Barclays",
+          name: "Priceline Rewards Visa® Card",
+          gb: "",
+          validity: "",
+          refresh: "",
+        },
+        {
+          bank: "Fidelity",
+          name: "Fidelity® Rewards Visa Signature® Card",
+          gb: "1 GB",
+          validity: "15 Days",
+          refresh: "365 days",
+        },
+      ];
+
+      const grid = document.getElementById("cardGrid");
+      const searchInput = document.getElementById("searchInput");
+      const toggleBtns = document.querySelectorAll(".toggle-btn");
+
+      let currentFilter = "all";
+      let currentSearch = "";
+
+      function renderCards() {
+        grid.innerHTML = "";
+
+        const filtered = cards.filter((c) => {
+          const matchSearch =
+            c.name.toLowerCase().includes(currentSearch) ||
+            c.bank.toLowerCase().includes(currentSearch);
+
+          let matchFilter = true;
+          if (currentFilter !== "all") {
+            matchFilter = c.gb === currentFilter;
+          }
+
+          return matchSearch && matchFilter;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML =
+            '<div style="grid-column: 1 / -1; text-align: center; color: var(--text-tertiary); padding: 48px;">No cards found.</div>';
+          return;
+        }
+
+        const htmlStr = filtered
+          .map((c) => {
+            let footerHtml = "";
+            if (c.gb) {
+              footerHtml = `
+              <div class="footer-grid">
+                <div>
+                  <div class="footer-val">${c.gb}</div>
+                  <div class="footer-label">Data</div>
+                </div>
+                <div>
+                  <div class="footer-val">${c.validity}</div>
+                  <div class="footer-label">Valid</div>
+                </div>
+                <div>
+                  <div class="footer-val">${c.refresh}</div>
+                  <div class="footer-label">Refresh</div>
+                </div>
+              </div>
+            `;
+            } else {
+              footerHtml = `<div class="ineligible">Not Eligible for Free eSIM</div>`;
+            }
+
+            let imgStyle = "";
+            if (c.img) {
+              imgStyle = `style="background-image: url('${c.img}'); background-size: cover; background-position: center;"`;
+            }
+
+            return `
+            <div class="card">
+              <div class="card-img" ${imgStyle}></div>
+              <div class="card-body">
+                <div class="card-title">${c.name}</div>
+                <div class="card-issuer">${c.bank}</div>
+                <div class="card-footer">
+                  ${footerHtml}
+                </div>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+
+        grid.innerHTML = htmlStr;
+      }
+
+      // Event Listeners
+      searchInput.addEventListener("input", (e) => {
+        currentSearch = e.target.value.toLowerCase();
+        renderCards();
+      });
+
+      toggleBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          toggleBtns.forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+          currentFilter = e.target.getAttribute("data-filter");
+          renderCards();
+        });
+      });
+
+      // Initial Render
+      renderCards();
+    </script>
+  </body>
+</html>
